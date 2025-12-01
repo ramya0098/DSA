@@ -83,6 +83,21 @@ public class TwoPointerEasyProblems {
         //3 SUM
         //List<List<Integer>> ans=threeSum(arr);
         //System.out.println(ans);
+
+        //3Sum CLOSEST
+        //int target=sc.nextInt();
+        //int ans=threeSumClosest(arr,target);
+        //System.out.println(ans);
+
+        //4SUM
+        //int target=sc.nextInt();
+        //List<List<Integer>> result=fourSum(arr,target);
+        //System.out.println(result);
+
+        //CONTAINER WITH MOST WATER
+        //int ans[]=containerWithMostWater(arr);
+        //System.out.println(Arrays.toString(ans));
+
     }
 //    reverse an array
     public static void reverseArray(int arr[]){
@@ -367,5 +382,96 @@ public class TwoPointerEasyProblems {
     }
 
 //    3 pointer closest
+    public static int threeSumClosest(int arr[],int target){
 
+        if(arr.length<3 || arr==null){
+            throw new IllegalArgumentException("Array should have atleast 3 numbers");
+        }
+        Arrays.sort(arr);
+        int n=arr.length;
+        int closestSum=arr[0]+arr[1]+arr[2];
+        for(int i=0;i<n-2;i++){
+            int left=0;
+            int right=n-1;
+            while(left<right){
+                int sum=arr[i]+arr[left]+arr[right];
+                if(Math.abs(sum-target)<Math.abs(closestSum-target)){
+                    closestSum=sum;
+                }
+                if(sum==target){
+                    return sum;
+                }
+                else if (sum>target) {
+                    right--;
+                }
+                else{
+                    left++;
+                }
+            }
+        }
+        return closestSum;
+    }
+
+//    4Sum (sort + nested two-pointer)
+    public static List<List<Integer>> fourSum(int arr[],int target){
+        if(arr.length<4 || arr==null){
+            throw new IllegalArgumentException("Array shoulld have atleast 4 numbers");
+        }
+        List<List<Integer>> result=new ArrayList<>();
+        int n=arr.length;
+        Arrays.sort(arr);
+
+        for(int i=0;i<n-3;i++){
+            if(i>0 && arr[i]==arr[i-1]) continue;
+            for(int j=i+1;j<n-2;j++){
+                if(j>i+1 && arr[j]==arr[j-1]) continue;
+
+                int left=j+1;
+                int right=n-1;
+                long twoSumTarget=target-arr[i]-arr[j];
+                while(left<right){
+                    int sumLR=arr[left]+arr[right];
+                    if(sumLR==twoSumTarget){
+                        result.add(Arrays.asList(arr[i],arr[j],arr[left],arr[right]));
+                        left++;
+                        right--;
+                        while(left<right && arr[left]==arr[left-1]) left++;
+                        while(left<right && arr[right]== arr[right+1]) right--;
+                    }
+                    else if(sumLR>twoSumTarget){
+                        right--;
+                    }
+                    else {
+                        left++;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+//    Container with most water
+    public static int[] containerWithMostWater(int heights[]) {
+        int n = heights.length;
+        int left = 0;
+        int right = n - 1;
+        int max = 0;
+        int leftIndex = 0;
+        int rightIndex = n - 1;
+
+        while (left < right) {
+            int height = Math.min(heights[left], heights[right]);
+            int area = height * (right - left);
+            if (area > max) {
+                max = area;
+                leftIndex = left;
+                rightIndex = right;
+            }
+            if (heights[left] > heights[right]) right--;
+            else left++;
+        }
+        return new int[]{max, leftIndex, rightIndex};
+    }
+
+//    
 }
