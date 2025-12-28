@@ -46,6 +46,9 @@ public class FlowOfProgram {
 
     //find the given year is leap year or not
     public static String isLeapYear(int year){
+        //  In general, every 4th year is a leap year.
+        //   But among century years, we remove 3 out of every 4 from the leap-year list,
+        //   and only the 4th century year remains a leap year.
         String ans="";
         if(year%400==0){
             ans="Given year is a leap year!";
